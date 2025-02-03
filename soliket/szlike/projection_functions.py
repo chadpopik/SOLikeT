@@ -308,8 +308,110 @@ def project_tsz(
         * 1e6
     )
 
+    sig_all_p_beam *= sr2sqarcmin #units in muK*sqarcmin
+    return sig_all_p_beam
+
+
+
+def project_tsz_fullpth(
+    tht,
+    M,
+    z,
+    nu,
+    beam_txt,
+    transform_type,
+    model_params,
+    beam_response,
+    twohalo_term,
+    provider,
+    Pthfull
+):
+    disc_fac = np.sqrt(2)
+    NNR = 100
+    resolution_factor = 3.5
+    NNR2 = resolution_factor * NNR
+    AngDis = AngDist(z, provider)
+
+    baseMap, r, r_max = radius_definition(transform_type)
+
+    r_use = AngDis * np.arctan(np.radians(tht / 60.0))
+    r_use2 = AngDis * np.arctan(np.radians(tht * disc_fac / 60.0))
+    r_ext = AngDis * np.arctan(r_max)  # total profile
+    r_ext2 = r_ext
+
+    rad = np.logspace(-3, 1, 200)  # Mpc
+    rad2 = rad
+
+    radlim = r_ext
+    radlim2 = r_ext2
+
+    dtht = np.arctan(radlim / AngDis) / NNR  # rads
+    dtht2 = np.arctan(radlim2 / AngDis) / NNR  # rads
+    dtht_use = np.arctan(r_use / AngDis) / NNR
+    dtht2_use = np.arctan(r_use2 / AngDis) / NNR
+
+    thta_use = (np.arange(NNR) + 1.0) * dtht_use
+    thta2_use = (np.arange(NNR) + 1.0) * dtht2_use
+
+    thta_smooth = (np.arange(NNR2) + 1.0) * dtht / resolution_factor
+    thta2_smooth = (np.arange(NNR2) + 1.0) * dtht2 / resolution_factor
+    thta_smooth = thta_smooth[:, None]
+    thta2_smooth = thta2_smooth[:, None]
+
+    rint = np.sqrt(rad**2 + thta_smooth**2 * AngDis**2)
+    rint2 = np.sqrt(rad2**2 + thta2_smooth**2 * AngDis**2)
+
+    Pth2D = (
+        2
+        * np.trapz(
+            Pthfull,
+            x=rad * kpc_cgs,
+            axis=1,
+        )
+        * 1e3
+    )
+    Pth2D2 = (
+        2
+        * np.trapz(
+            Pthfull,
+            x=rad2 * kpc_cgs,
+            axis=1,
+        )
+        * 1e3
+    )
+
+    thta_smooth = (np.arange(NNR2) + 1.0) * dtht / resolution_factor
+    thta2_smooth = (np.arange(NNR2) + 1.0) * dtht2 / resolution_factor
+
+    if transform_type == "FFT":
+        Pth2D_beam = convolve_FFT(
+            r, thta_smooth, Pth2D, beam_txt, baseMap, thta_use, beam_response
+        )
+        Pth2D2_beam = convolve_FFT(
+            r, thta2_smooth, Pth2D2, beam_txt, baseMap, thta2_use, beam_response
+        )
+    elif transform_type == "Hankel":
+        Pth2D_beam = convolve_Hankel(
+            thta_smooth, Pth2D, beam_txt, thta_use, beam_response
+        )
+        Pth2D2_beam = convolve_Hankel(
+            thta2_smooth, Pth2D2, beam_txt, thta2_use, beam_response
+        )
+
+    sig_p = 2.0 * np.pi * dtht_use * np.sum(thta_use * Pth2D_beam)
+    sig2_p = 2.0 * np.pi * dtht2_use * np.sum(thta2_use * Pth2D2_beam)
+    sig_all_p_beam = (
+        (2 * sig_p - sig2_p)
+        * ST_CGS
+        / (ME_CGS * C_CGS**2)
+        * ((2.0 + 2.0 * XH) / (3.0 + 5.0 * XH))
+        * 1e6
+    )
+
     # sig_all_p_beam *= sr2sqarcmin #units in muK*sqarcmin
     return sig_all_p_beam
+
+
 
 
 def project_obb(tht, M, z, beam_txt, theta, nu, fbeam, provider):
