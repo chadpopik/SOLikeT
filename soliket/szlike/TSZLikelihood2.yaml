@@ -1,0 +1,103 @@
+# Have to outline all input parameters/files used in the likelihood and model, even if you want to override them later
+
+params:
+    A0_P0:
+        latex: A_0^{P_0}
+        ref: 2
+        prior:
+            min: 0.1
+            max: 30.0
+    alpham_P0:
+        latex: \alpha_m^{P_0}
+        value: 0
+        ref: 0.154
+        prior:
+            min: 0.1
+            max: 30.0
+    alphaz_P0:
+        latex: \alpha_z^{P_0}
+        value: 0
+        # ref: -0.758
+        # prior:
+        #     min: -5
+        #     max: 5
+    A0_xc:
+        latex: A_0^{x_c}
+        ref: 0.8
+        prior:
+            min: 0.1
+            max: 2
+    alpham_xc:
+        latex: \alpha_m^{x_c}
+        value: 0
+        # ref: -0.00865
+        # prior:
+        #     min: -5
+        #     max: 30.0
+    alphaz_xc:
+        latex: \alpha_z^{x_c}
+        value: 0
+        # ref: 0.731
+        # prior:
+        #     min: 0.1
+        #     max: 30.0
+    A0_beta:
+        latex: A_0^{\beta}
+        ref: 2.6
+        prior:
+            min: 1
+            max: 10
+    alpham_beta:
+        latex: \alpha_m^{\beta}
+        value: 0
+        # ref: 0.0393
+        # prior:
+        #     min: -5
+        #     max: 30.0
+    alphaz_beta:
+        latex: \alpha_z^{\beta}
+        value: 0
+        # ref: 0.415
+        # prior:
+        #     min: 0.1
+        #     max: 30.0
+    A2h:
+        latex: A_{2h}
+        ref: 1.0
+        prior:
+            min: 0
+            max: 5
+
+
+    redshift: 
+        value: 0.55 
+    mass_halo_mean_Msol:
+        value: 1e13
+    Omega_m:
+        value: 0.25
+    Omega_b:
+        value: 0.044
+    hh:
+        value: 0.7
+    Omega_L:
+        value: 0.75
+    rhoc_0:
+        value: 2.77525e2
+    C_OVER_HUBBLE:
+        value: 2997.9
+    XH:
+        value: 0.76 #hydrogen fraction
+    v_rms:
+        value: 1.06e-3 #v_rms/c
+
+sz_data_file: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/gnfw_test_projections.txt
+beam_file: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/beam_f150_daynight.txt
+transform_type: Hankel #FFT or Hankel
+#optional beam response file
+beam_response: False #False, or give file
+cov_tsz_file: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/cov_diskring_tsz_varweight_bootstrap.txt
+#optional 2-halo file
+twohalo_term: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/twohalo_cmass_average.txt #False, or give file. Need to flesh out this option more, but the idea is that if False it will use two_halo.py to calculate a 2h term
+redshift_dist_file: /global/cfs/projectdirs/desi/public/papers/c3/lrg_xcorr_2023/v1/redshift_dist/main_lrg_pz_dndz_iron_v0.4_dz_0.01.txt
+mass_dist_file: /pscratch/sd/c/cpopik/save_data_point_DESI-2023-0213/Fig1_LRG_z0.5.txt
+frequency_GHz: 150

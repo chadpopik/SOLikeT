@@ -1,11 +1,11 @@
-sz_data_file: gnfw_test_projections.txt
-beam_file: beam_f150_daynight.txt
+sz_data_file: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/gnfw_test_projections.txt
+beam_file: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/beam_f150_daynight.txt
 transform_type: Hankel #FFT or Hankel
 #optional beam response file
-beam_response: act_planck_s08_s18_cmb_f150_daynight_response_tsz.txt #False, or give file
-cov_tsz_file: cov_diskring_tsz_varweight_bootstrap.txt
+beam_response: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/act_planck_s08_s18_cmb_f150_daynight_response_tsz.txt #False, or give file
+cov_tsz_file: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/cov_diskring_tsz_varweight_bootstrap.txt
 #optional 2-halo file
-twohalo_term: twohalo_cmass_average.txt #False, or give file. Need to flesh out this option more, but the idea is that if False it will use two_halo.py to calculate a 2h term
+twohalo_term: /global/homes/c/cpopik/Git/SOLikeT/soliket/szlike/twohalo_cmass_average.txt #False, or give file. Need to flesh out this option more, but the idea is that if False it will use two_halo.py to calculate a 2h term
 
 redshift: 0.55 
 mass_halo_mean_Msol: 1.e13

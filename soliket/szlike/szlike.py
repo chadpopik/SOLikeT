@@ -18,8 +18,7 @@ class SZLikelihood(GaussianLikelihood):
         self.beam_response = self.beam_response
         self.twohalo_term = self.twohalo_term
 
-        x, y, cov = self._
-        _data()
+        x, y, cov = self._get_data()
         self.data = GaussianData("SZModel", x, y, cov)
 
     def logp(self, **params_values):
